@@ -7,7 +7,6 @@ openpyxl==3.0.4
 Pillow==7.1.2
 pyTelegramBotAPI==3.7.3
 pytz==2020.1
-request==2019.4.13
 requests==2.24.0
 six==1.15.0
 sqlparse==0.3.1
