@@ -1,0 +1,60 @@
+{% extends 'index.html' %}
+
+{% block content0 %}
+
+{% if page_type == 'edit_w' or page_type == 'edit_e' %}
+    <h4>Страница редактирования показаний</h4>
+{% endif %}
+    {% if value_error %}
+<p class="alert alert-danger">
+Текущие показания не могут быть меньше предыдущих
+<br>
+{% if page_type == 'water' %}
+Последние показания: {{ max_previous_values }} m3
+{%  elif page_type == 'electro' %}
+Последние показания: День: {{ max_previous_values_day }}, Ночь {{ max_previous_values_night }}
+{% endif %}
+</p>{% endif %}
+
+<div class="container-fluid">
+    {% if page_type == 'water' %}
+        <h3 style="color: blue">Добавление показаний воды</h3>
+        <h6 style="color: darkslateblue">Последние показания счетчика воды на дату {{ last_date }}: {{ max_previous_values }} м3</h6>
+    {% elif page_type == 'electro'%}
+        <h3 style="color: blue">Добавление показаний электричества</h3>
+         <h6 style="color: darkslateblue">Последние показания счетчика электричества на дату {{ last_date }}: День - {{ max_previous_values_day }} КВт, Ночь - {{ max_previous_values_night }} КВт</h6>
+    {% endif %}
+</div>
+
+<div class="container-fluid">
+    <table class="table table-bordered">
+ <form action="." method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+{% for field in form %}
+    <tr>
+        <th>{{ field.label_tag }}</th>
+        <td>{{ field }}</td>
+
+    </tr>
+{% endfor %}
+ </table>
+     <button class="btn btn-primary">Сохранить</button>
+</form>
+</div>
+    <br>
+
+
+{% if page_type == 'edit_w' %}
+<div class="container-fluid">
+<a href="{% url 'acc_app:del_w_value' pk=value_pk %}" class="btn btn-danger" style="width:100%">Удалить показание</a>
+</div>
+{% elif page_type == 'edit_e' %}
+<div class="container-fluid">
+    <a href="{% url 'acc_app:del_e_value' pk=value_pk %}" class="btn btn-danger" style="width:100%">Удалить показание</a>
+</div>
+{% endif %}
+
+
+
+
+{% endblock content0 %}

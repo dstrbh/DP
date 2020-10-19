@@ -1,0 +1,64 @@
+{% extends 'index.html' %}
+
+{% block content0 %}
+<div class="container-fluid">
+
+{% if page_type == 'del_cust' %}
+<h3 style="color: red; "> Вы желаете удалить потребителя: {{ customer.surname }} {{ customer.name }},
+    участок № {{ customer.massive }}-{{ customer.line }}-{{ customer.sector }} ???</h3>
+<h6 style="color: darkred">Это действие необратимо. Одновременно с потребителем будет удалена вся история его показаний</h6>
+
+{% elif page_type == 'del_payment' %}
+<h3 style="color: red; "> Вы желаете удалить оплату потребителя {{ payment.customer.surname }}
+    {{ payment.customer.name }} от {{ payment.payment_date_check }}?</h3>
+<h6 style="color: darkred">Это действие необратимо.</h6>
+
+
+{% elif page_type == 'del_w_value' or 'del_e_value' %}
+<h3 style="color: red; "> Вы желаете удалить показания потребителя {{ value.customer.surname }}
+    {{ value.customer.name }} от {{ value.add_date }}?</h3>
+<h6 style="color: darkred">Это действие необратимо.</h6>
+
+
+
+{% endif %}
+
+
+<p>
+{% if page_type == 'del_cust' %}
+<form action="{% url 'acc_app:del_customer' pk=customer.pk %}" method="post">
+    {% csrf_token %}
+    <button class="btn btn-danger btn-lg" style="width: 49%">Удалить потребителя</button>
+    <a href="/cstmrs/{{ customer.pk }}/" class="btn btn-primary btn-lg" style="width: 49%">Отменить удаление</a>
+</form>
+
+{% elif page_type == 'del_w_value' %}
+
+<form action="{% url 'acc_app:del_w_value' pk=value.pk %}" method="post">
+    {% csrf_token %}
+    <button class="btn btn-danger btn-lg" style="width: 49%">Удалить показания</button>
+    <a href="/w-values/edit/{{ value.pk }}/" class="btn btn-primary btn-lg" style="width: 49%">Отменить удаление</a>
+</form>
+
+{% elif page_type == 'del_e_value' %}
+
+<form action="{% url 'acc_app:del_e_value' pk=value.pk %}" method="post">
+    {% csrf_token %}
+    <button class="btn btn-danger btn-lg" style="width: 49%">Удалить показания</button>
+    <a href="/e-values/edit/{{ value.pk }}/" class="btn btn-primary btn-lg" style="width: 49%">Отменить удаление</a>
+</form>
+
+{% elif page_type == 'del_payment' %}
+<form action="{% url 'acc_app:del_payment' pk=payment.pk %}" method="post">
+    {% csrf_token %}
+    <button class="btn btn-danger btn-lg" style="width: 49%">Удалить оплату</button>
+    <a href="/cstmrs/{{ payment.customer_id }}/" class="btn btn-primary btn-lg" style="width: 49%">Отменить удаление</a>
+</form>
+
+
+
+{% endif %}
+</p>
+</div>
+
+{% endblock content0 %}

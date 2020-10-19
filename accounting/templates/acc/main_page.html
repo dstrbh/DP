@@ -1,0 +1,46 @@
+{% extends 'index.html' %}
+
+{% block content0 %}
+
+{% endblock content0 %}
+
+{% block content1 %}
+
+    <div class="container-fluid" style="color: #0c5460; font-size: xx-large">
+         Система сбора и учета показаний потребления воды и электричества СОГ "Черноморец"
+     </div>
+
+    <div class="container-fluid, img-thumbnail">
+        <a href="{% url 'acc_app:customers_p' %}">
+      <img src="/media/templates/households.jpg" class="img-thumbnail" width="300" >Работа с потребителями
+        </a>
+    </div>
+
+    <div class="container-fluid, img-thumbnail">
+            <a href="{% url 'acc_app:make_export' %}">
+      <img src="/media/templates/export_to_excel.png" class="img-thumbnail" width="300">Экспорт данных в Excel
+    </div>
+
+    <div class="container-fluid, img-thumbnail">
+            <a href="{% url 'acc_app:comunity' %}">
+      <img src="/media/templates/comm.jpg" class="img-thumbnail" width="300">Наше комюнити
+
+{#        todo Сделать страницу комьюнити#}
+
+    </div>
+
+{#    <div class="container-fluid, img-thumbnail">#}
+{#            <a href="/">#}
+{#      <img src="/media/templates/water.jpg" class="img-thumbnail" width="300">Работа с показаниями счетчиков воды#}
+{#    </div>#}
+{##}
+{#    <div class="container-fluid, img-thumbnail">#}
+{#            </a>#}
+{#            <a href="/">#}
+{#      <img src="/media/templates/electro.jpg" class="img-thumbnail" width="300">Работа с показаниями счетчиков электроэнергии#}
+{#        </a>#}
+{#    </div>#}
+
+
+{% endblock content1 %}
+

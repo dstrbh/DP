@@ -1,0 +1,311 @@
+{% extends 'index.html' %}
+
+{% block content0 %}
+
+
+
+    <div class="container-fluid">
+        <table class="table table-bordered">
+
+          <tbody>
+            <tr>
+              <th scope="row" width="250px">ФИО</th>
+              <td style="font-weight: bold; color: darkgreen">{{ customer.surname }} {{ customer.name }} {{ customer.second_name }}</td>
+            </tr>
+            <tr>
+
+            <tr>
+              <th scope="row">Номер участка</th>
+              <td>{{ customer.massive}}-{{ customer.line }}-{{ customer.sector }}</td>
+            </tr>
+
+            <tr>
+              <th scope="row">Контактная информация:</th>
+              <td>
+                  Телефон: {{ customer.phone_1 }}<br>
+                  Телефон 2: {{ customer.phone_2 }} <br>
+                  E-mail: {{ customer.email }}
+              </td>
+            </tr>
+
+
+
+          </tbody>
+        </table>
+    </div>
+
+{% comment %}
+Блок информации о воде
+{% endcomment %}
+    <div class="container-fluid">
+        <table class="table table-bordered">
+
+          <tbody>
+            <tr>
+              <th scope="row" style="color: blue">Вода</th>
+            </tr>
+            <tr>
+              <th scope="row" width="250px">Активный договор:</th>
+              <td> {% if customer.water_service %}
+                  <p style="font-weight: bold; color: green">Услуга предоставляется</p>
+                  {% else %}
+                  <p style="font-weight: bold; color: red">Нет активного договора</p>
+                  {% endif %}
+              </td>
+            </tr>
+            <tr>
+              <th scope="row" width="250px">Номер счетчика воды:</th>
+              <td>{{ customer.water_counter_number}}</td>
+            </tr>
+            <tr>
+              <th scope="row" >Дата последней поверки:</th>
+              <td>{{ customer.water_counter_last_check}}</td>
+            </tr>
+            <tr>
+              <th scope="row" >Дата последующей поверки:</th>
+              <td>{{ customer.water_counter_next_check}}</td>
+            </tr>
+            <tr>
+              <th scope="row" >Фото узла ввода воды:</th>
+              <td>
+                  {% if customer.water_counter_photo %}
+                  <a href="/media/{{ customer.water_counter_photo }}" target="_blank">
+                  <img src="/media/{{ customer.water_counter_photo }}" alt="" class="img-thumbnail" width="200">
+                  </a>
+                  {% else %}
+                      <p>Нет фото</p>
+                  {% endif %}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+
+{% comment %}
+Блок инфо о электричестве
+{% endcomment %}
+  <div class="container-fluid">
+<table class="table table-bordered">
+
+  <tbody>
+    <tr>
+      <th scope="row" style="color: blue">Электричество</th>
+    </tr>
+    <tr>
+      <th scope="row" width="250px">Активный договор:</th>
+      <td> {% if customer.el_service %}
+          <p style="font-weight: bold; color: green">Услуга предоставляется</p>
+          {% else %}
+          <p style="font-weight: bold; color: red">Нет активного договора</p>
+          {% endif %}
+      </td>
+    </tr>
+
+    <tr>
+      <th scope="row" width="250px">Номер электросчетчика:</th>
+      <td>{{ customer.el_counter_number}}</td>
+    </tr>
+    <tr>
+      <th scope="row" >Дата последней поверки:</th>
+      <td>{{ customer.el_counter_last_check}}</td>
+    </tr>
+    <tr>
+      <th scope="row" >Дата последующей поверки:</th>
+      <td>{{ customer.el_counter_next_check}}</td>
+    </tr>
+    <tr>
+      <th scope="row" >Фото электроузла:</th>
+      <td>
+          {% if customer.el_counter_photo %}
+          <a href="/media/{{ customer.el_counter_photo }}" target="_blank">
+          <img src="/media/{{ customer.el_counter_photo }}" alt="" class="img-thumbnail" width="200">
+          </a>
+          {% else %}
+              <p>Нет фото</p>
+          {% endif %}
+      </td>
+    </tr>
+
+  </tbody>
+</table>
+    </div>
+
+<div class="container-fluid">
+<p>Заметки:</p>
+<p>{{ customer.notation }}</p>
+</div>
+
+
+
+<div class="container-fluid">
+    <a href="/cstmrs/edit-cstmr/{{ customer.pk }}" class="btn btn-info">Редактировать</a>
+</div>
+    <br>
+
+
+<div class="container-fluid">
+<h5 style="color: blue">Последние показания счетчика воды</h5>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col" width="5%">#</th>
+      <th scope="col" width="15%">Дата</th>
+      <th scope="col" width="15%">Показания</th>
+      <th scope="col" width="10%">Фото</th>
+      <th scope="col">Заметки</th>
+    </tr>
+  </thead>
+  <tbody>
+    {%  for water_value in water_values %}
+
+    <tr>
+      <th scope="row">{{ forloop.counter }}</th>
+      <td>{{ water_value.add_date }}</td>
+      <td>{{ water_value.w_values }}</td>
+      <td>
+          {% if water_value.photo_values %}
+          <a href="/media/{{ water_value.photo_values }}" target="_blank">
+            <img src="/media/{{ water_value.photo_values }}" alt="" class="img-thumbnail" width="30">
+          </a>
+          {% else %}
+          -
+          {% endif %}
+      </td>
+      <td>{{ water_value.notation }}</td>
+    </tr>
+
+  {% endfor %}
+
+  </tbody>
+</table>
+
+<a href="{% url 'acc_app:water_values' pk=customer.pk %}" class="btn btn-info">Подробнее</a>
+<a href="{% url 'acc_app:add_water_values' pk=customer.pk %}" class="btn btn-warning">Добавить показания</a>
+    <br>
+</div>
+
+<div class="container-fluid">
+    <br>
+<table class="table table-bordered">
+    <tbody>
+          <tr>
+              <th scope="row" width="20%" style="color: blue">Информация об оплате воды</th>
+          </tr>
+        <tr>
+            <th scope="row">Данные об оплате на дату:</th>
+            {% if water_payment %}
+            <td>{{ water_payment.payment_date_check }}</td>
+            {% else %}
+            <td style="color: darkred">--- Информация об оплатах отсутствует ---</td>
+            {% endif %}
+        </tr>
+        <tr>
+            <th scope="row">Суммарно оплачено:</th>
+            <td>{{ sum_water_payment }}</td>
+        </tr>
+        <tr>
+            <th scope="row">Долг по оплате на текущую дату:</th>
+            <td>{{ water_debt }}</td>
+        </tr>
+    </tbody>
+</table>
+<a href="{% url 'acc_app:w_payments' pk=customer.pk %}" class="btn btn-info">Подробнее</a>
+<a href="{% url 'acc_app:add_payments' pk=customer.pk %}" class="btn btn-warning">Добавить оплату</a>
+</div>
+
+
+
+<div class="container-fluid">
+    <br>
+    <h5 style="color: blue">Последние показания электричества</h5>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col" width="5%">#</th>
+      <th scope="col" width="15%">Дата</th>
+      <th scope="col" width="15%">Показания День</th>
+      <th scope="col" width="15%">Показания Ночь</th>
+      <th scope="col" width="10%">Фото</th>
+      <th scope="col">Заметки</th>
+    </tr>
+  </thead>
+  <tbody>
+    {%  for el_value in el_values %}
+
+    <tr>
+      <th scope="row">{{ forloop.counter }}</th>
+      <td>{{ el_value.add_date }}</td>
+      <td>{{ el_value.e_values_daytime }}</td>
+      <td>{{ el_value.e_values_nighttime }}</td>
+      <td>
+          {% if el_value.photo_values %}
+          <a href="/media/{{ el_value.photo_values }}" target="_blank">
+            <img src="/media/{{ el_value.photo_values }}" alt="" class="img-thumbnail" width="30">
+          </a>
+          {% else %}
+          -
+          {% endif %}
+      </td>
+      <td>{{ el_value.notation }}</td>
+    </tr>
+
+  {% endfor %}
+
+  </tbody>
+</table>
+<a href="{% url 'acc_app:electro_values' pk=customer.pk %}" class="btn btn-info">Подробнее</a>
+<a href="{% url 'acc_app:add_electro_values' pk=customer.pk %}" class="btn btn-warning">Добавить показания</a>
+</div>
+<div class="container-fluid">
+    <br>
+<table class="table table-bordered">
+    <tbody>
+          <tr>
+              <th scope="row" width="20%" style="color: blue">Информация об оплате электричества</th>
+          </tr>
+        <tr>
+            <th scope="row">Данные об оплате на дату:</th>
+            {% if latest_payment_date %}
+            <td>{{ latest_payment_date }}</td>
+            {% else %}
+            <td style="color: darkred">--- Информация об оплатах отсутствует ---</td>
+            {% endif %}
+        </tr>
+        <tr>
+            <th scope="row">Суммарно оплачено (День):</th>
+            <td>{{ sum_e_payments_day }}</td>
+        </tr>
+         <tr>
+            <th scope="row">Суммарно оплачено (Ночь):</th>
+            <td>{{ sum_e_payments_night }}</td>
+        </tr>
+        <tr>
+            <th scope="row">Долг по оплате на текущую дату (День):</th>
+            <td>{{ el_debt_day }}</td>
+        </tr>
+        <tr>
+            <th scope="row">Долг по оплате на текущую дату (Ночь):</th>
+            <td>{{ el_debt_night }}</td>
+        </tr>
+    </tbody>
+</table>
+<a href="{% url 'acc_app:e_payments' pk=customer.pk %}" class="btn btn-info">Подробнее</a>
+<a href="{% url 'acc_app:add_payments' pk=customer.pk %}" class="btn btn-warning">Добавить оплату</a>
+</div>
+
+<br>
+<div class="container-fluid">
+<a href="{% url 'acc_app:del_customer' pk=customer.pk %}" class="btn btn-danger" style="width:100%">Удалить потребителя</a>
+</div>
+
+{% endblock content0 %}
+
+
+
+
+
+{#{% block extra_js %}#}
+{#    <script>#}
+{#    alert('hello js')#}
+{#    </script>#}
+{#{% endblock extra_js %}#}

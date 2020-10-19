@@ -1,0 +1,29 @@
+{% extends 'index.html' %}
+
+{% block content0 %}
+
+    <div class="container-fluid">
+    {% if validation_err %}
+        <p style="color: darkred; font-weight: bold">{{ validation_err }}</p>
+    {% endif %}
+
+        <table class="table table-bordered">
+            <form action="." method="post">
+                {% csrf_token %}
+            {% for field in form %}
+            <tr>
+                <th>{{ field.label_tag }}</th>
+                <td>{{ field }}</td>
+             </tr>
+            {% endfor %}
+         </table>
+            <button class="btn btn-primary">Изменить</button>
+            </form>
+
+    </div>
+    <br>
+    <div class="container-fluid">
+    <a href="{% url 'acc_app:del_payment' pk=payment_id %}" class="btn btn-danger" style="width:100%">Удалить оплату</a>
+    </div>
+{% endblock content0 %}
+

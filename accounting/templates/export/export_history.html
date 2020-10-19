@@ -1,0 +1,47 @@
+{% extends 'index.html' %}
+{% block content0 %}
+<span class="border">
+    <div class="container-fluid">
+        <h style="font-size: x-large; color: #005cbf; font-weight: bold">Экспорт показаний в Excel</h>
+    <br>
+{#    <a href="" class=" btn btn-warning">Добавить</a>#}
+        <form action="." method="post">
+        {% csrf_token %}
+        <button class="btn btn-warning">Экспортировать</button>
+            <br>
+            <h>Выбор формата ячеек экспортируемой таблицы:</h><br>
+        <input type="radio" name="xls_cell_choice" value="formula" checked> В виде формулы (Значения вычисляются Excel)
+            <br>
+            <input type="radio" name="xls_cell_choice" value="value"> В виде значений из базы данных
+
+
+        </form>
+    </span>
+    <br>
+    <table class="table table-striped, table table-bordered">
+      <thead>
+        <tr>
+            <th scope="col">№</th>
+            <th scope="col">Дата Экспорта</th>
+            <th scope="col">Экспорт пользователем:</th>
+            <th scope="col">Файл экспорта</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for export in exports %}
+        <tr>
+          <th scope="row">{{ forloop.counter }}</th>
+          <td>{{ export.export_date }}</td>
+          <td>{{ export.user }}</td>
+          <td>
+          <a href="/media/export_xls/{{ export.export_file }}" target="_blank">
+            <img src="/media/templates/xls.jpg" alt="" class="img-thumbnail" width="40">
+          </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>
+
+{% endblock content0 %}

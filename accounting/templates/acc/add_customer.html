@@ -1,0 +1,37 @@
+{% extends 'index.html' %}
+
+{% block content0 %}
+{% if adress_err %}
+<p class="alert alert-danger">
+{{ adress_err }}
+{% endif %}
+</p>
+    <div class="container-fluid">
+
+    <form action="{% url 'acc_app:add_customer' %}" enctype="multipart/form-data" method="post" >
+    {% csrf_token %}
+
+ <table class="table table-bordered">
+
+  <tbody>
+    <tr>
+      <th scope="row" style="color: blue; font-size: large" >Добавление потребителя</th>
+    </tr>
+
+
+    {% for field in form %}
+    <tr>
+      <th scope="row" width="300px">{{ field.label_tag }}</th>
+      <td class="form-control-lg"> {{ field }}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+
+    <button class="btn btn-info">Сохранить</button>
+    </form>
+</div>
+{% endblock content0 %}

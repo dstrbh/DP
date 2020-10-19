@@ -1,0 +1,57 @@
+{% extends 'index.html' %}
+
+{% block content0 %}
+
+    <div class="container-fluid">
+<h5 style="color: blue">История показания счетчика воды</h5>
+
+<div class="select2-container--focus">
+    <a href="{% url 'acc_app:add_water_values' pk=customer %}" class="btn btn-warning">Добавить показания</a>
+</div>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+{% if page == 'water_values_d_date'%}
+    <th scope="col"><a href="{% url 'acc_app:water_values_r_date' pk=customer %}">Дата</a></th>
+{% else %}
+    <th scope="col"><a href="{% url 'acc_app:water_values_d_date' pk=customer %}">Дата</a></th>
+{% endif %}
+
+{% if page == 'water_values_d_value'%}
+        <th scope="col"><a href="{% url 'acc_app:water_values_r_value' pk=customer %}">Показания</a></th>
+{% else %}
+        <th scope="col"><a href="{% url 'acc_app:water_values_d_value' pk=customer%}">Показания</a></th>
+{% endif %}
+
+      <th scope="col">Фото</th>
+      <th scope="col">Заметки</th>
+    </tr>
+  </thead>
+
+
+  <tbody>
+    {%  for value in values %}
+
+    <tr>
+      <th scope="row"><a href="{% url 'acc_app:edit_water_values' pk=value.pk  %}">{{ forloop.counter }}</a></th>
+      <td>{{ value.add_date }}</td>
+      <td>{{ value.w_values }}</td>
+      <td>
+          {% if value.photo_values %}
+          <a href="/media/{{ value.photo_values }}" target="_blank">
+            <img src="/media/{{ value.photo_values }}" alt="" class="img-thumbnail" width="30">
+          </a>
+          {% else %}
+          -
+          {% endif %}
+      </td>
+      <td>{{ value.notation }}</td>
+    </tr>
+    {% endfor %}
+</table>
+    </div>
+
+{% endblock content0 %}
+

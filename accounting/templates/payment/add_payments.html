@@ -1,0 +1,24 @@
+{% extends 'index.html' %}
+
+{% block content0 %}
+
+    <div class="container-fluid">
+    {% if validation_err %}
+        <p style="color: darkred; font-weight: bold">{{ validation_err }}</p>
+    {% endif %}
+
+        <table class="table table-bordered">
+            <form action="." method="post">
+                {% csrf_token %}
+            {% for field in form %}
+            <tr>
+                <th>{{ field.label_tag }}</th>
+                <td>{{ field }}</td>
+             </tr>
+            {% endfor %}
+         </table>
+            <button class="btn btn-primary">Добавить</button>
+            </form>
+
+    </div>
+{% endblock content0 %}

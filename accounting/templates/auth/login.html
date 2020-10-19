@@ -1,0 +1,23 @@
+{% extends 'index.html' %}
+{% block content0 %}
+    <br>
+    <div class="container-fluid">
+        {% if err %}
+            <p class="alert alert-danger">{{ err }}</p>
+        {% endif %}
+        <form action="{% url 'acc_app:login_page' %}", method="post">
+            {% csrf_token %}
+        <div>
+            <label for="">Логин</label>
+            <input type="text" name="username">
+        </div>
+        <div>
+            <label for="">Пароль</label>
+            <input type="password" name="password">
+        </div>
+            <button class="btn btn-success">Вход</button>
+        </form>
+    </div>
+
+{% endblock content0 %}
+

@@ -1,0 +1,102 @@
+{% extends 'index.html' %}
+{% comment %}
+    @ Сделать сортировку показаний
+{% endcomment %}
+
+{% block content0 %}
+
+    <div class="container-fluid">
+{% if type_values == 'water' %}
+<h5 style="color: blue">История показания счетчика воды</h5>
+{% elif type_values == 'electro' %}
+<h5 style="color: blue">История показания счетчика электричества</h5>
+{% endif %}
+
+<div class="select2-container--focus">
+{% if type_values == 'water' %}
+    <a href="{% url 'acc_app:add_water_values' pk=customer %}" class="btn btn-warning">Добавить показания</a>
+{% elif type_values == 'electro' %}
+    <a href="{% url 'acc_app:add_electro_values' pk=customer %}" class="btn btn-warning">Добавить показания</a>
+{% endif %}
+</div>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+{% if type_values == 'water' %}
+{% if page == 'water_values_d_date'%}
+    <th scope="col"><a href="{% url 'acc_app:water_values_r_date' pk=customer %}">Дата</a></th>
+{% else %}
+    <th scope="col"><a href="{% url 'acc_app:water_values_d_date' pk=customer %}">Дата</a></th>
+{% endif %}
+{% endif %}
+{% if type_values == 'electro' %}
+    <th scope="col">Показания День</th>
+    <th scope="col">Показания Ночь</th>
+{% else %}
+
+    {% if page == 'water_values_d_value'%}
+        <th scope="col"><a href="{% url 'acc_app:water_values_r_value' pk=customer %}">Показания</a></th>
+    {% else %}
+        <th scope="col"><a href="{% url 'acc_app:water_values_d_value' pk=customer%}">Показания</a></th>
+    {% endif %}
+
+
+{% endif %}
+      <th scope="col">Фото</th>
+      <th scope="col">Заметки</th>
+    </tr>
+  </thead>
+
+{% if type_values == 'water' %}
+  <tbody>
+    {%  for value in values %}
+
+    <tr>
+      <th scope="row"><a href="{% url 'acc_app:edit_water_values' pk=value.pk  %}">{{ forloop.counter }}</a></th>
+      <td>{{ value.add_date }}</td>
+      <td>{{ value.w_values }}</td>
+      <td>
+          {% if value.photo_values %}
+          <a href="/media/{{ value.photo_values }}" target="_blank">
+            <img src="/media/{{ value.photo_values }}" alt="" class="img-thumbnail" width="30">
+          </a>
+          {% else %}
+          -
+          {% endif %}
+      </td>
+      <td>{{ value.notation }}</td>
+    </tr>
+  {% endfor %}
+
+{% elif type_values == 'electro' %}
+      <tbody>
+    {%  for value in values %}
+
+    <tr>
+      <th scope="row"><a href="{% url 'acc_app:edit_electro_values' pk=value.pk  %}">{{ forloop.counter }}</a></th>
+      <td>{{ value.add_date }}</td>
+      <td>{{ value.e_values_daytime }}</td>
+      <td>{{ value.e_values_nighttime }}</td>
+      <td>
+          {% if value.photo_values %}
+          <a href="/media/{{ value.photo_values }}" target="_blank">
+            <img src="/media/{{ value.photo_values }}" alt="" class="img-thumbnail" width="30">
+          </a>
+          {% else %}
+          -
+          {% endif %}
+      </td>
+      <td>{{ value.notation }}</td>
+    </tr>
+
+  {% endfor %}
+{% endif %}
+</table>
+    </div>
+
+
+
+{% endblock content0 %}
+

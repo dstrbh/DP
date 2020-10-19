@@ -1,0 +1,97 @@
+{% extends 'index.html' %}
+
+{% block content0 %}
+
+    <div class="container-fluid">
+    {% if type_payments == 'water' %}
+    <h5 style="color: blue">История оплат за воду</h5>
+    {% elif type_payments == 'electro' %}
+    <h5 style="color: blue">История оплат за электричество</h5>
+    {% endif %}
+
+    <div class="select2-container--focus">
+        <a href="{% url 'acc_app:add_payments' pk=customer %}" class="btn btn-warning">Добавить оплату</a>
+    </div>
+        {% if type_payments == 'water' %}
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col" width="10%">#</th>
+            <th scope="col" width="20%">Оплата на дату</th>
+            <th scope="col" width="20%">Оплачено</th>
+            </tr>
+          </thead>
+
+
+
+          <tbody>
+
+         {% if err_mess %}
+             <h4 style="color: darkred"> {{ err_mess }}</h4>
+         {% else %}
+
+            {%  for payment in payments %}
+
+            <tr>
+              <th scope="row">
+                  <a href="{% url 'acc_app:payment_detail' pk=payment.pk %}">{{ forloop.counter }}</a>
+              </th>
+              <td>{{ payment.payment_date_check }}</td>
+              <td>{{ payment.payment_w_values }}</td>
+            </tr>
+          {% endfor %}
+            <tr>
+                <th scope="row">Суммарно оплачено, на дату, м3:</th>
+                <td style="font-weight: bold">{{ latest_date.payment_date_check }}</td>
+                <td style="font-weight: bold">{{ sum_w_payments }}</td>
+            </tr>
+             </table>
+        {% endif %}
+
+
+
+
+        {% elif type_payments == 'electro' %}
+          <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col" width="10%">#</th>
+            <th scope="col" width="20%">Оплата на дату</th>
+            <th scope="col" width="20%">Оплачено КВт (Дневной тариф)</th>
+            <th scope="col" width="20%">Оплачено КВт (Ночной тариф)</th>
+            </tr>
+          </thead>
+
+            <tbody>
+
+         {% if err_mess %}
+             <h4 style="color: darkred"> {{ err_mess }}</h4>
+         {% else %}
+
+            {%  for payment in payments %}
+
+            <tr>
+              <th scope="row">
+                  <a href="{% url 'acc_app:payment_detail' pk=payment.pk %}">{{ forloop.counter }}</a>
+              </th>
+              <td>{{ payment.payment_date_check }}</td>
+              <td>{{ payment.payment_e_values_daytime }}</td>
+              <td>{{ payment.payment_e_values_nighttime }}</td>
+            </tr>
+          {% endfor %}
+            <tr>
+                <th scope="row">Суммарно оплачено, на дату, КВт:</th>
+                <td style="font-weight: bold">{{ latest_date.payment_date_check }}</td>
+                <td style="font-weight: bold">{{ sum_e_payments_day }}</td>
+                <td style="font-weight: bold">{{ sum_e_payments_night }}</td>
+            </tr>
+             </table>
+        {% endif %}
+        {% endif %}
+
+
+    </div>
+
+
+
+{% endblock content0 %}
