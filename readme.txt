@@ -8,4 +8,5 @@
 
 7. Запускаем сервер: python3 manage.py runserver 127.0.0.1:9000
 
-8. Запускаем телеграм-бота: python manage.py
+8. Запускаем телеграм-бота: python manage.py telegram_bot
+    Предварительно вставляем валидный токен в файл: "acc/management/commands/lib/bot_config.py"
