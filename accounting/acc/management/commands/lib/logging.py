@@ -1,8 +1,12 @@
-import datetime
+import datetime, os
 
 # Декоратор логирования
 def log(fn):
     def wrapper(ms):
+
+        directory = 'LOG/'
+        if not os.path.exists(directory):
+            os.makedirs(directory)
         with open('LOG/telegram.log', 'a') as LOG:
             fn(ms)
             log_chain = 'something going wrong..'
