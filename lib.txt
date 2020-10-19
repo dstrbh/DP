@@ -1,0 +1,5 @@
+Используемые библиотеки:
+Django==3.0.6
+openpyxl==3.0.4
+Pillow==7.1.2
+pyTelegramBotAPI==3.7.3
