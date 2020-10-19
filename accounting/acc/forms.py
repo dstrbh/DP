@@ -53,7 +53,5 @@ class Customer_Edit_Form(Customer_Form):
             'water_counter_next_check':forms.SelectDateWidget(years=range(2020,2032), attrs={'class': 'form-control-sm'}),
             'el_counter_last_check':forms.SelectDateWidget(years=range(2010,2023), attrs={'class': 'form-control-sm'}),
             'el_counter_next_check':forms.SelectDateWidget(years=range(2020,2032), attrs={'class': 'form-control-sm'}),
-            # 'massive':forms.HiddenInput(attrs={'class': 'form-control-sm'}),
-            # 'line':forms.HiddenInput(attrs={'class': 'form-control-sm'}),
-            # 'sector':forms.HiddenInput(attrs={'class': 'form-control-sm'}),
+
         }

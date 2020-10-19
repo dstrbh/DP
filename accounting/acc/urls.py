@@ -1,6 +1,6 @@
 from django.urls import path, include
 from .views import start, customers_page, customer_detail, \
-    add_customer, edit_customer, test_fn, water_values, electro_values, add_values, del_obj, \
+    add_customer, edit_customer, water_values, electro_values, add_values, del_obj, \
     edit_value, payments, add_payments, payment_detail, comunity
 from .auth_views import *
 from .export_views import *
@@ -26,8 +26,8 @@ urlpatterns = [
 
     path('comunity/', comunity, name='comunity'),
 
-    path('TEST/', test_fn, name = 'test_fn'),
-    # path('WE/', make_export, name = 'make_export'),
+
+
     ]
 
 values_sort = [

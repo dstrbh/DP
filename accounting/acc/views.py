@@ -1,34 +1,8 @@
-from django.shortcuts import render, redirect, HttpResponse
-from .models import Customers, Water_values, Electro_values, Payment_Data
 from django.contrib.auth.decorators import login_required
 from .forms import *
 from django.db.models import Q, Max, Sum
 from .outer_function import *
 import datetime
-
-# todo Очистить импорт
-from reportlab.pdfgen import canvas
-from django.http import HttpResponse
-
-
-
-# todo Очистить тестовую функцию
-def test_fn(request):
-    # Create the HttpResponse object with the appropriate PDF headers.
-    response = HttpResponse(content_type='rrr')
-    response['Content-Disposition'] = 'attachment; filename="somefilename.pdf"'
-
-    # Create the PDF object, using the response object as its "file."
-    p = canvas.Canvas(response)
-
-    # Draw things on the PDF. Here's where the PDF generation happens.
-    # See the ReportLab documentation for the full list of functionality.
-    p.drawString(100, 100, "Hello world.")
-
-    # Close the PDF object cleanly, and we're done.
-    p.showPage()
-    p.save()
-    return response
 
 
 def start(request):
@@ -115,24 +89,6 @@ def customer_detail(request, customer_id):
         ctx['el_debt_night'] = get_el_values.latest('add_date').e_values_nighttime - sum_e_payments_night
 
 
-        # electro_payment_day = Payment_Data.objects.filter(customer=customer_id, payment_e_values_daytime__gte=0)
-        # electro_payment_night = Payment_Data.objects.filter(customer=customer_id,
-        #                                                     payment_e_values_nighttime__gte=0)
-        # ctx['electro_payment_daytime'] = electro_payment_day.latest('payment_date_check')
-        # ctx['electro_payment_nighttime'] = electro_payment_night.latest('payment_date_check')
-        # sum_e_payments_day = electro_payment_day.aggregate(Sum('payment_e_values_daytime'))[
-        #     'payment_e_values_daytime__sum']
-        # ctx['sum_e_payments_day'] = sum_e_payments_day
-        # sum_e_payments_night = electro_payment_night.aggregate(Sum('payment_e_values_nighttime'))[
-        #     'payment_e_values_nighttime__sum']
-        #
-        # ctx['sum_e_payments_night'] = sum_e_payments_night
-        # ctx['el_debt_day'] = get_el_values.latest('add_date').e_values_daytime - sum_e_payments_day
-        # ctx['el_debt_night'] = get_el_values.latest('add_date').e_values_nighttime - sum_e_payments_night
-        # print('this way')
-        # ctx['latest_payment_date'] = max(electro_payment_day.latest('payment_date_check').payment_date_check,
-        #                                  electro_payment_night.latest('payment_date_check').payment_date_check)
-
     except Exception as el:
         ctx['err_e_p'] = el
         print(el)
@@ -145,7 +101,6 @@ def add_customer(request):
     ctx = {}
     if request.method == 'POST':
         form = Customer_Form(request.POST, request.FILES)
-        # adress_list = [form.massive, form.line, form.sector]
         if form.is_valid():
             if not Customers.objects.filter(massive=form.cleaned_data['massive'], line=form.cleaned_data['line'],
                                             sector=form.cleaned_data['sector']):

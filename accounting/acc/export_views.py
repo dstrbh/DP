@@ -5,17 +5,9 @@ from openpyxl.utils import get_column_letter
 from .models import *
 from django.db.models import Q, Sum
 from datetime import date, datetime
-import json
-import os.path
-from django.http import HttpResponse
 from .models import Export_Data_xls
 from django.contrib.auth.decorators import login_required
 
-
-# def export_history(request):
-#     ctx = {}
-#     ctx['msg'] = 'Export history page'
-#     return render(request, 'export/export_history.html', ctx)
 
 @login_required
 def make_export(request):
@@ -25,21 +17,10 @@ def make_export(request):
     if request.method == 'POST':
         json_data = make_json()
 
-        #
-        # # #todo удалить тестовый вывод:
-        # for i in json_data:
-        #     if i['adress'] == '1-2-2':
-        #         print(i)
-
         if request.POST['xls_cell_choice'] == 'formula':
             write_excel(json_data, request, formula=True)
         elif request.POST['xls_cell_choice'] == 'value':
             write_excel(json_data, request, formula=False)
-        redirect('http://192.168.88.60:9000/media/export_xls/%D0%9F%D0%BE%D0%BA%D0%B0%D0%B7%D0%B0%D0%BD%D0%B8%D1%8F-2020_09_01_00-22.xlsx')
-
-    # # Добавляем запись в базу экспортов:
-    # add_export = Export_Data_xls(user=request.user.username)
-    # add_export.save()
 
     return render(request, 'export/export_history.html', ctx)
 
@@ -47,10 +28,6 @@ def make_export(request):
 def make_json():
     base_customers_var = Customers.objects.all()
     json_data = []
-
-    # todo проверить назначение функции
-    def date_format(date):
-        return date.strftime("%Y-%m-%d")
 
     for customer in base_customers_var:
         water_values = None
@@ -249,7 +226,7 @@ def write_excel(json_data, request, formula):
 
     def debth_formula(j, dict_elem_count):
         # Для колонки "Долг, вода" устанавливаем формулу для подсчета и подкрашиваем ячейки.
-        # todo Блок, который отвечает за вставку формулы в ячейки вместо значений. Вынести.
+
         if j == 7:
             cell.value = f'={get_column_letter(j - 2)}{dict_elem_count}-{get_column_letter(j)}{dict_elem_count}'
         elif j == 14 or j == 15:
@@ -337,7 +314,7 @@ def write_excel(json_data, request, formula):
     sheet.row_dimensions[1].height = 20
     sheet.row_dimensions[2].height = 30
 
-    # filename = os.path.join('c:/', 'Users', 'dstrebushnyi', 'Desktop', 'Temp', 'DP', f'Показания-{date_today}.xlsx')
+
     filename = f'Показания-{date_today}.xlsx'
 
     wb.save(filename=f'media/export_xls/{filename}')

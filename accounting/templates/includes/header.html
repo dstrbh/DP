@@ -14,8 +14,7 @@
     </ul>
 
   </div>
-{#    <a href="{% url 'acc_app:test_fn' %}" class="btn btn-danger">Тест функции</a>#}
-{#    <a href="{% url 'acc_app:make_export' %}" class="btn btn-warning">Wr Excel</a>#}
+
     {% if not request.user.is_authenticated %}
     <a class="btn btn-primary" href="{% url 'acc_app:login_page' %}">Вход</a>
 

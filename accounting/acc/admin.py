@@ -24,7 +24,6 @@ admin.site.register(Customers, CustomersAdmin)
 admin.site.register(Water_values, Water_values_Admin)
 admin.site.register(Electro_values, Electro_values_Admin)
 admin.site.register(Payment_Data, Payment_Data_Admin)
-# todo Удалить из админки модуль экспорта данных
-admin.site.register(Export_Data_xls)
+
 
 
